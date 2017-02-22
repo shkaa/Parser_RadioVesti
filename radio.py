@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from grab import Grab
-
+import time
 
 def radio():
 
@@ -13,12 +13,16 @@ def radio():
         s = Grab()
         s.go(scr)
         for element in s.doc.select("//a[@class='listen-news']"):
+            time.sleep(1)
             scr_audio = ("http://audio.rutv.ru/download?id="+str(element.attr('data-audio-id')))[:-1]
             f = Grab()
-            name = element.attr('data-audio-title')
+            name = s.doc.select("//h1[@class='h1-title']").text()
+            name = name.replace(":", "")
+            name = name.replace("?", "")
+            name = name.replace("!", "")
             print name
             print scr_audio
-            f.go(scr_audio, log_file=name+'..mp3')
+            f.go(scr_audio, log_file=name+'.mp3')
 
     print 'Конец'
 

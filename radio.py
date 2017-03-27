@@ -16,7 +16,6 @@ def radio():
         scr = 'http://radiovesti.ru'+str(elem.attr('href'))
         s = Grab()
         s.go(scr)
-        i = 0
         if pytils.dt.ru_strftime(u"%d %B %Y", inflected=True) in s.doc.select("//div[@class='news__date'][1]").text():
             for element in s.doc.select("//a[@class='listen-news']"):
                 sleep(1)
@@ -26,11 +25,15 @@ def radio():
                 name = name.replace(":", "")
                 name = name.replace("?", "")
                 name = name.replace("!", "")
+                name = name.replace("-", "")
+                name = name.replace("\"", "")
                 print name
-                # print scr_audio
-                f.go(scr_audio, log_file=name+'.mp3')
-                i = + 1
+                #print scr_audio
+                try:
+                    f.go(scr_audio, log_file=name+'..mp3')
+                except:
+                    continue
 
-    print '\nКонец, загружено --->',i ,'файлов'
+    print '\nКонец'
 
 radio()
